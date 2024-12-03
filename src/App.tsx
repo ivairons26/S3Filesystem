@@ -1,15 +1,14 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
 import "./App.css";
-// import AWS from "aws-sdk";
+import ConfigForm from "./config-form/ConfigForm";
+import { useConfigContext } from "./context/config.util";
+import Home from "./home/Home";
 
-function App() {
+export default function App() {
+  const configContext = useConfigContext();
   return (
     <>
       <div>File system</div>
+      {configContext.config ? <Home /> : <ConfigForm />}
     </>
   );
 }
-
-export default App;
