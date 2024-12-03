@@ -8,6 +8,7 @@ export default function ConfigForm() {
   const [accessKey, setAccessKey] = useState<string>("");
   const [secretKey, setPassword] = useState<string>("");
   const [region, setRegion] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
   const headBucket = async () => {
     const options = {
@@ -22,11 +23,15 @@ export default function ConfigForm() {
       const params = {
         Bucket: bucketName,
       };
-      const data = await s3.headBucket(params).promise();
-      console.log("S3 Bucket Objects:", data);
+      await s3.headBucket(params).promise();
       writeConfig({ bucketName, options });
     } catch (error) {
-      console.error("Error listing objects:", error);
+      setError("Not able to connect to bucket with these credentials.");
+
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+      console.error("Error head bucket:", error);
     }
   };
 
@@ -81,6 +86,7 @@ export default function ConfigForm() {
           required
         />
       </div>
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
       <button type="submit">Connect</button>
     </form>

@@ -4,7 +4,7 @@ export default function Home() {
   const config = useConfigContext();
 
   if (config.config?.bucketName) {
-    console.log(config);
+    // TODO
   }
   return <>TODO add logic here</>;
 }
