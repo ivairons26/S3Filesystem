@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import AWS from "aws-sdk";
 import { useConfigContext } from "../context/config.context";
 
 export default function ConfigForm() {
   const { writeConfig } = useConfigContext();
+  const [isConnecting, setConnecting] = useState<boolean>(false);
   const [bucket, setBucket] = useState<string>("");
   const [accessKey, setAccessKey] = useState<string>("");
   const [secretKey, setPassword] = useState<string>("");
@@ -25,8 +26,10 @@ export default function ConfigForm() {
       };
       await s3.headBucket(params).promise();
       writeConfig({ bucketName, options });
+      setConnecting(false);
     } catch (error) {
       setError("Not able to connect to bucket with these credentials.");
+      setConnecting(false);
 
       setTimeout(() => {
         setError(null);
@@ -37,6 +40,7 @@ export default function ConfigForm() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    setConnecting(true);
     headBucket();
   };
 
@@ -87,8 +91,11 @@ export default function ConfigForm() {
         />
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <button type="submit">Connect</button>
+      {isConnecting ? (
+        <Suspense fallback={<h3>Loading...</h3>}>Loading...</Suspense>
+      ) : (
+        <button type="submit">Connect</button>
+      )}
     </form>
   );
 }
