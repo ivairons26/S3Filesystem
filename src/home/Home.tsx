@@ -1,4 +1,4 @@
-import { useConfigContext } from "../context/config.util";
+import { useConfigContext } from "../context/config.context";
 
 export default function Home() {
   const config = useConfigContext();

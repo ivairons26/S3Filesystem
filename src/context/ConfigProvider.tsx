@@ -1,14 +1,7 @@
-import React, { createContext, useState, ReactNode, useEffect } from "react";
+import React, { useState, ReactNode, useEffect } from "react";
 import { Config } from "./config.model";
-
-interface ConfigContextType {
-  config: Config | undefined;
-  writeConfig: (config: Config) => void;
-}
-
-export const ConfigContext = createContext<ConfigContextType | undefined>(
-  undefined
-);
+import "./ConfigProvider.css";
+import { ConfigContext } from "./config.context";
 
 // Define a key for localStorage
 const CONNECTION_STRING_STORAGE_KEY = "connectionString";

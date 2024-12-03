@@ -1,6 +1,6 @@
 import { useState } from "react";
 import AWS from "aws-sdk";
-import { useConfigContext } from "../context/config.util";
+import { useConfigContext } from "../context/config.context";
 
 export default function ConfigForm() {
   const { writeConfig } = useConfigContext();
@@ -38,7 +38,7 @@ export default function ConfigForm() {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Connect to your S3 bucket</h2>
-      <div>
+      <div className="configInput">
         <label htmlFor="bucket">Bucket:</label>
         <input
           type="text"
@@ -49,7 +49,7 @@ export default function ConfigForm() {
         />
       </div>
 
-      <div>
+      <div className="configInput">
         <label htmlFor="accessKey">AWS Access Key:</label>
         <input
           type="text"
@@ -60,7 +60,7 @@ export default function ConfigForm() {
         />
       </div>
 
-      <div>
+      <div className="configInput">
         <label htmlFor="secretKey">AWS Secret Key:</label>
         <input
           type="text"
@@ -71,7 +71,7 @@ export default function ConfigForm() {
         />
       </div>
 
-      <div>
+      <div className="configInput">
         <label htmlFor="region">Region:</label>
         <input
           type="text"

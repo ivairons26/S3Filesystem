@@ -1,6 +1,6 @@
 import "./App.css";
 import ConfigForm from "./config-form/ConfigForm";
-import { useConfigContext } from "./context/config.util";
+import { useConfigContext } from "./context/config.context";
 import Home from "./home/Home";
 
 export default function App() {
