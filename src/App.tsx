@@ -1,5 +1,5 @@
 import "./App.css";
-import ConfigForm from "./config-form/ConfigForm";
+import ConfigForm from "./components/config-form/ConfigForm";
 import { useConfigContext } from "./contexts/config.context";
 import FileSystemComponent from "./components/filesystem/FileSystem";
 import { S3ServiceProvider } from "./contexts/S3ServiceProvider";

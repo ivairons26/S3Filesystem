@@ -1,7 +1,7 @@
 import { Suspense, useState } from "react";
-import { useConfigContext } from "../contexts/config.context";
-import S3Provider from "../providers/s3.provider";
-import { Config } from "../models/config.model";
+import { useConfigContext } from "../../contexts/config.context";
+import S3Provider from "../../providers/s3.provider";
+import { Config } from "../../models/config.model";
 import "./ConfigForm.css";
 
 export default function ConfigForm() {
