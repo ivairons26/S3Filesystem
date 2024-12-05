@@ -1,6 +1,8 @@
 import { Suspense, useState } from "react";
-import AWS from "aws-sdk";
-import { useConfigContext } from "../context/config.context";
+import { useConfigContext } from "../contexts/config.context";
+import S3Provider from "../providers/s3.provider";
+import { Config } from "../models/config.model";
+import "./ConfigForm.css";
 
 export default function ConfigForm() {
   const { writeConfig } = useConfigContext();
@@ -12,20 +14,23 @@ export default function ConfigForm() {
   const [error, setError] = useState<string | null>(null);
 
   const headBucket = async () => {
-    const options = {
-      accessKeyId: accessKey,
-      secretAccessKey: secretKey,
-      region: region,
+    const config: Config = {
+      bucketName: "",
+      options: {
+        accessKeyId: accessKey,
+        secretAccessKey: secretKey,
+        region: region,
+      },
     };
-    const s3 = new AWS.S3(options);
+    S3Provider.setInstance(config);
     const bucketName = bucket;
 
     try {
       const params = {
         Bucket: bucketName,
       };
-      await s3.headBucket(params).promise();
-      writeConfig({ bucketName, options });
+      await S3Provider.getInstance().headBucket(params).promise();
+      writeConfig({ bucketName, options: config.options });
       setConnecting(false);
     } catch (error) {
       setError("Not able to connect to bucket with these credentials.");

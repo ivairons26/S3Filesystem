@@ -1,14 +1,20 @@
 import "./App.css";
 import ConfigForm from "./config-form/ConfigForm";
-import { useConfigContext } from "./context/config.context";
-import Home from "./home/Home";
+import { useConfigContext } from "./contexts/config.context";
+import FileSystemComponent from "./components/filesystem/FileSystem";
+import { S3ServiceProvider } from "./contexts/S3ServiceProvider";
 
 export default function App() {
   const configContext = useConfigContext();
   return (
     <>
-      <div>File system</div>
-      {configContext.config ? <Home /> : <ConfigForm />}
+      {configContext.config ? (
+        <S3ServiceProvider>
+          <FileSystemComponent />
+        </S3ServiceProvider>
+      ) : (
+        <ConfigForm />
+      )}
     </>
   );
 }

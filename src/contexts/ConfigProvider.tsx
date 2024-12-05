@@ -1,10 +1,10 @@
 import React, { useState, ReactNode, useEffect } from "react";
-import { Config } from "./config.model";
-import "./ConfigProvider.css";
+import { Config } from "../models/config.model";
 import { ConfigContext } from "./config.context";
+import S3Provider from "../providers/s3.provider";
 
 // Define a key for localStorage
-const CONNECTION_STRING_STORAGE_KEY = "connectionString";
+export const CONNECTION_STRING_STORAGE_KEY = "connectionString";
 
 export const ConfigProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -15,7 +15,9 @@ export const ConfigProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     const hasConfig = localStorage.getItem(CONNECTION_STRING_STORAGE_KEY);
     if (hasConfig) {
-      setConfig(JSON.parse(hasConfig));
+      const configObj = JSON.parse(hasConfig);
+      setConfig(configObj);
+      S3Provider.setInstance(configObj);
     }
   }, []);
 

@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { Config } from "./config.model";
+import { Config } from "../models/config.model";
 
 interface ConfigContextType {
   config: Config | undefined;
