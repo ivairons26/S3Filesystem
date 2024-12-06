@@ -99,7 +99,9 @@ export default function ConfigForm() {
       {isConnecting ? (
         <Suspense fallback={<h3>Loading...</h3>}>Loading...</Suspense>
       ) : (
-        <button type="submit">Connect</button>
+        <button className="primary" type="submit">
+          Connect
+        </button>
       )}
     </form>
   );
