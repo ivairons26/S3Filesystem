@@ -1,0 +1,8 @@
+.viewport {
+  display: flex;
+
+  .navigation {
+    display: flex;
+    height: 100vh;
+  }
+}

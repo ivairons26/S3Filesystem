@@ -1,0 +1,9 @@
+.left-navigation {
+  width: 250px;
+  background-color: #f4f4f4;
+  border-right: 1px solid #ddd;
+
+  button {
+    background-color: transparent;
+  }
+}

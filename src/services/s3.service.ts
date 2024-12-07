@@ -1,3 +1,4 @@
+import { OBJECT_STRUCTURE } from "../models/filesystem.model";
 import S3Provider from "../providers/s3.provider";
 
 class S3Service {
@@ -24,8 +25,21 @@ class S3Service {
       //   console.log(dir.Body.toString("utf-8"));
       return await S3Provider.getInstance().getObject(params).promise();
     } catch (error) {
-      console.error("Error listing objects:", error);
+      console.error("Error getting object", error);
     }
+  };
+
+  public getStructureObject = async (bucketName: string) => {
+    const params = {
+      Bucket: bucketName,
+      Key: OBJECT_STRUCTURE,
+    };
+
+    return JSON.parse(
+      (
+        await S3Provider.getInstance().getObject(params).promise()
+      ).Body.toString("utf-8")
+    );
   };
 
   public uploadObject = async (
@@ -42,6 +56,19 @@ class S3Service {
       };
 
       return await S3Provider.getInstance().upload(params).promise();
+    } catch (error) {
+      console.error("Error uploading object:", error);
+    }
+  };
+
+  public deleteObject = async (bucketName: string, key: string) => {
+    try {
+      const params = {
+        Bucket: bucketName,
+        Key: key,
+      };
+
+      return await S3Provider.getInstance().deleteObject(params).promise();
     } catch (error) {
       console.error("Error uploading object:", error);
     }

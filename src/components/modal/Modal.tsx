@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, FC, FormEvent, ChangeEvent } from "react";
 import "./Modal.css";
 import xMark from "../../assets/xmark.svg";
 
@@ -9,29 +9,29 @@ interface ModalProps {
   onSubmit: (value: string, content: string) => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ title, isOpen, onClose, onSubmit }) => {
-  const [inputValue, setInputValue] = React.useState("");
-  const [inputContent, setInputContent] = React.useState("");
-  const [error, setError] = React.useState<string | null>(null);
+const Modal: FC<ModalProps> = ({ title, isOpen, onClose, onSubmit }) => {
+  const [inputValue, setInputValue] = useState("");
+  const [inputContent, setInputContent] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     onSubmit(inputValue, inputContent);
     setInputValue("");
     onClose();
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
 
-    if (newValue.includes("/") || newValue.includes(".")) {
-      setError("Characters are not allowed: '.' and '/'");
-    } else {
-      setError(null);
-      setInputValue(newValue);
-    }
+    // if (newValue.includes("/") || newValue.includes(".")) {
+    //   setError("Characters are not allowed: '.' and '/'");
+    // } else {
+    setError(null);
+    setInputValue(newValue);
+    // }
   };
 
   return (
@@ -54,7 +54,6 @@ const Modal: React.FC<ModalProps> = ({ title, isOpen, onClose, onSubmit }) => {
             value={inputContent}
             onChange={(e) => setInputContent(e.target.value)}
             placeholder="Enter content"
-            required
           />
           {error && <p style={{ color: "red" }}>{error}</p>}
           <button className="primary" type="submit">

@@ -1,27 +1,82 @@
-import { ObjectList } from "aws-sdk/clients/s3";
+// import { ObjectList } from "aws-sdk/clients/s3";
+// import { Tree } from "../models/filesystem.model";
 
-export function buildFolderTree(objects: ObjectList) {
-  const root: { [key: string]: object } = {};
+// type TestTree = {
+//   name: string;
+//   filepath: string;
+//   type: "folder" | "file";
+//   items?: TestTree[];
+// };
 
-  objects.forEach((object) => {
-    let parts: string[];
-    if (object.Key) {
-      parts = object.Key.split("/").filter((p) => p !== "");
-      let current = root;
+// const test: TestTree = {
+//   name: "dir_1",
+//   filepath: "dir_1/",
+//   type: "folder",
+//   items: [
+//     {
+//       name: "object1.txt",
+//       filepath: "dir_1/object1.txt",
+//       type: "file",
+//     },
+//     {
+//       name: "dir_2",
+//       filepath: "dir_1/dir_2/",
+//       type: "folder",
+//       items: [],
+//     },
+//   ],
+// };
 
-      parts.forEach((part) => {
-        if (!current[part]) {
-          const isFile = part.substring(part.length - 4) === ".txt";
+// export function buildFolderTree(objects: ObjectList) {
+//   const root: Tree = {
+//     type: "folder",
+//   };
 
-          current[part] = {
-            isFile: isFile,
-          };
-        }
+//   objects.forEach((object) => {
+//     let parts: string[];
+//     if (object.Key) {
+//       parts = object.Key.split("/").filter((p) => p !== "");
+//       let current = root;
 
-        current = current[part];
-      });
-    }
-  });
+//       parts.forEach((part) => {
+//         if (!current[part]) {
+//           const type =
+//             part.substring(part.length - 4) === ".txt" ? "file" : "folder";
 
-  return root;
+//           current[part] = {
+//             type: type,
+//           };
+//         }
+
+//         if (typeof current[part] !== "string") {
+//           current = current[part];
+//         }
+//       });
+//     }
+//   });
+
+//   return root;
+// }
+
+export function buildEmptyRootFolder() {
+  return {
+    type: "folder",
+    name: "",
+    path: "",
+    children: [
+      {
+        type: "folder",
+        name: "dir_1",
+        path: "dir_1/",
+        children: [
+          {
+            type: "folder",
+            name: "dir_2",
+            path: "dir_2/",
+            children: [],
+          },
+        ],
+      },
+    ],
+  };
 }

@@ -28,13 +28,6 @@ export default function MainView() {
   };
 
   const handleSubmit = (name: string, content: string) => {
-    console.log(
-      "Submitted name:",
-      name + entitySuffix[entityType],
-      content,
-      entityType
-    );
-
     // TODO add to appropriate directory
     if (configContext.config) {
       s3Service.uploadObject(
@@ -47,21 +40,22 @@ export default function MainView() {
 
   return (
     <>
-      <div>MainView</div>
-      <button
-        onClick={() => handleOpenModal("folder")}
-        title="Add new folder"
-        className="icon-button"
-      >
-        <img src={addFolder} alt="" />
-      </button>
-      <button
-        onClick={() => handleOpenModal("file")}
-        title="Create new file"
-        className="icon-button"
-      >
-        <img src={newFile} alt="" />
-      </button>
+      <nav className="top-navigation">
+        <button
+          onClick={() => handleOpenModal("folder")}
+          title="Add new folder"
+          className="icon-button"
+        >
+          <img src={addFolder} alt="" />
+        </button>
+        <button
+          onClick={() => handleOpenModal("file")}
+          title="Create new file"
+          className="icon-button"
+        >
+          <img src={newFile} alt="" />
+        </button>
+      </nav>
       <Modal
         title={modalTitle}
         isOpen={isModalOpen}
