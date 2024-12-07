@@ -1,56 +1,15 @@
 import { useEffect, useState } from "react";
 import { useConfigContext } from "../../contexts/config.context";
 import MainView from "../main-view/MainView";
-// import FolderTree from "../folder-tree/FolderTree";
 import { useS3Service } from "../../contexts/S3ServiceProvider";
 import { buildEmptyRootFolder } from "../../utils/folderTree.util";
 import "./FileSystem.css";
 import { FolderTree } from "../folder-tree/FolderTree";
-const data = [
-  {
-    type: "folder",
-    name: "public",
-    path: "public/",
-    children: [
-      {
-        type: "file",
-        name: "index.html",
-        path: "public/index.html",
-      },
-    ],
-  },
-  {
-    type: "folder",
-    name: "src",
-    path: "src/",
-    children: [
-      {
-        type: "folder",
-        name: "components",
-        path: "src/components",
-        children: [
-          {
-            type: "folder",
-            name: "home",
-            path: "src/components/home",
-            children: [],
-          },
-        ],
-      },
-      {
-        type: "file",
-        name: "App.js",
-        path: "src/App.js",
-      },
-    ],
-  },
-];
+import { Tree } from "../../models/filesystem.model";
 
 export default function FileSystemComponent() {
   const configContext = useConfigContext();
-  const [fileData, setFileData] = useState({});
-  console.log(123);
-
+  const [fileData, setFileData] = useState<Tree>();
   const s3Service = useS3Service();
 
   useEffect(() => {

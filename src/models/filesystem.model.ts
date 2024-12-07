@@ -1,9 +1,10 @@
 import { EntityType } from "../utils/entitity.util";
 
-// TODO remove
 export type Tree = {
-  [key: string]: Tree | EntityType;
   type: EntityType;
+  name: string;
+  path: string;
+  children: Tree[];
 };
 
 export const OBJECT_STRUCTURE = "~s3_filesystem_structure~";

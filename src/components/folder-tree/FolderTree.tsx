@@ -2,10 +2,9 @@ import { useState } from "react";
 import "./FolderTree.css";
 import arrowDown from "../../assets/arrow-down.svg";
 import arrowRight from "../../assets/arrow-right.svg";
+import { Tree } from "../../models/filesystem.model";
 
-export const FolderTree = ({ data }) => {
-  console.log(111, data);
-
+export const FolderTree = ({ data }: { data: Tree[] }) => {
   const [showNested, setShowNested] = useState<{ [key: string]: boolean }>({});
 
   const toggleNested = (name: string) => {
