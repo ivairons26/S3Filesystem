@@ -29,7 +29,7 @@ export default function FileSystemComponent() {
         .getStructureObject(configContext.config.bucketName)
         .then((data) => {
           setFileData(data);
-          console.log("fileSystemTree", data);
+          // console.log("fileSystemTree", data);
         })
         .catch((error: Error) => {
           if (error.message === "The specified key does not exist.") {

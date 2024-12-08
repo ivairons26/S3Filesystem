@@ -50,59 +50,61 @@ export default function ConfigForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Connect to your S3 bucket</h2>
-      <div className="configInput">
-        <label htmlFor="bucket">Bucket:</label>
-        <input
-          type="text"
-          id="bucket"
-          value={bucket}
-          onChange={(e) => setBucket(e.target.value)}
-          required
-        />
-      </div>
+    <div className="config-form">
+      <form onSubmit={handleSubmit}>
+        <h2>Connect to your S3 bucket</h2>
+        <div className="configInput">
+          <label htmlFor="bucket">Bucket:</label>
+          <input
+            type="text"
+            id="bucket"
+            value={bucket}
+            onChange={(e) => setBucket(e.target.value)}
+            required
+          />
+        </div>
 
-      <div className="configInput">
-        <label htmlFor="accessKey">AWS Access Key:</label>
-        <input
-          type="text"
-          id="accessKey"
-          value={accessKey}
-          onChange={(e) => setAccessKey(e.target.value)}
-          required
-        />
-      </div>
+        <div className="configInput">
+          <label htmlFor="accessKey">AWS Access Key:</label>
+          <input
+            type="text"
+            id="accessKey"
+            value={accessKey}
+            onChange={(e) => setAccessKey(e.target.value)}
+            required
+          />
+        </div>
 
-      <div className="configInput">
-        <label htmlFor="secretKey">AWS Secret Key:</label>
-        <input
-          type="text"
-          id="secretKey"
-          value={secretKey}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
+        <div className="configInput">
+          <label htmlFor="secretKey">AWS Secret Key:</label>
+          <input
+            type="text"
+            id="secretKey"
+            value={secretKey}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
 
-      <div className="configInput">
-        <label htmlFor="region">Region:</label>
-        <input
-          type="text"
-          id="region"
-          value={region}
-          onChange={(e) => setRegion(e.target.value)}
-          required
-        />
-      </div>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {isConnecting ? (
-        <Suspense fallback={<h3>Loading...</h3>}>Loading...</Suspense>
-      ) : (
-        <button className="primary" type="submit">
-          Connect
-        </button>
-      )}
-    </form>
+        <div className="configInput">
+          <label htmlFor="region">Region:</label>
+          <input
+            type="text"
+            id="region"
+            value={region}
+            onChange={(e) => setRegion(e.target.value)}
+            required
+          />
+        </div>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        {isConnecting ? (
+          <Suspense fallback={<h3>Loading...</h3>}>Loading...</Suspense>
+        ) : (
+          <button className="primary" type="submit">
+            Connect
+          </button>
+        )}
+      </form>
+    </div>
   );
 }

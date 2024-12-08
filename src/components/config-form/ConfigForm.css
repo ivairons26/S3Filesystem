@@ -13,6 +13,11 @@ form {
   border-radius: 4px;
 }
 
+.config-form {
+  display: flex;
+  justify-content: center;
+}
+
 label {
   font-weight: bold;
 }

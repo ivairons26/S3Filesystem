@@ -1,0 +1,48 @@
+.file-system {
+  display: flex;
+  gap: 20px;
+  list-style: none; /* Remove default bullets */
+  margin: 0; /* Remove default margin */
+  font-family: Arial, sans-serif; /* Set font for the file system */
+  padding-top: 18px;
+  padding-left: 18px;
+}
+
+.file-item {
+  display: flex; /* Align icon and text horizontally */
+  align-items: center; /* Vertically center-align the icon and text */
+  margin: 8px 0; /* Add spacing between items */
+}
+
+.icon {
+  width: 24px; /* Set icon width */
+  height: 24px; /* Set icon height */
+  margin-right: 8px; /* Add space between icon and text */
+}
+
+.file-item:hover {
+  background-color: #f0f0f0; /* Highlight the item on hover */
+  cursor: pointer; /* Show pointer cursor on hover */
+}
+
+.main-view {
+  width: 100%;
+}
+
+.top-navigation {
+  background-color: #e3f2fd; /* Light background */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  color: #1e88e5; /* Dark text for contrast */
+}
+
+.current-directory {
+  font-size: 16px;
+  font-weight: bold;
+  flex-grow: 1;
+  text-align: center;
+}
