@@ -45,7 +45,7 @@ export const FolderTree = ({
         const dirData = data[key];
 
         return (
-          <div key={dirData.path}>
+          <div key={dirData.path} style={{ paddingLeft: "35px" }}>
             {/* rendering folders */}
             {dirData.type === "folder" && (
               <button

@@ -2,7 +2,12 @@
   display: flex;
 
   .navigation {
+    overflow: auto;
     display: flex;
+    width: 350px;
     height: 100vh;
+
+    background-color: #f4f4f4;
+    border-right: 1px solid #ddd;
   }
 }

@@ -40,6 +40,10 @@ input {
   cursor: pointer;
   margin: 10px;
 }
+button:disabled,
+button[disabled] {
+  cursor: not-allowed;
+}
 
 .icon-button:hover {
   border: 1px solid #007bff;

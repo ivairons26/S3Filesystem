@@ -2,17 +2,13 @@ import { OBJECT_STRUCTURE, Tree } from "../models/filesystem.model";
 import S3Provider from "../providers/s3.provider";
 
 class S3Service {
-  public listObjects = async (bucketName: string) => {
-    try {
-      const params = {
-        Bucket: bucketName,
-        // Prefix: "dir_1/"  every object that starts with dir_1
-      };
+  public listObjects = async (bucketName: string, prefix: string) => {
+    const params = {
+      Bucket: bucketName,
+      Prefix: prefix,
+    };
 
-      return await S3Provider.getInstance().listObjectsV2(params).promise();
-    } catch (error) {
-      console.error("Error listing objects:", error);
-    }
+    return await S3Provider.getInstance().listObjectsV2(params).promise();
   };
 
   public getObject = async (bucketName: string, objectName: string) => {
