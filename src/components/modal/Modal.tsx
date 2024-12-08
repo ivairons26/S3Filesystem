@@ -12,7 +12,6 @@ interface ModalProps {
 const Modal: FC<ModalProps> = ({ title, isOpen, onClose, onSubmit }) => {
   const [inputValue, setInputValue] = useState("");
   const [inputContent, setInputContent] = useState("");
-  const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
@@ -26,12 +25,7 @@ const Modal: FC<ModalProps> = ({ title, isOpen, onClose, onSubmit }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
 
-    // if (newValue.includes("/") || newValue.includes(".")) {
-    //   setError("Characters are not allowed: '.' and '/'");
-    // } else {
-    setError(null);
     setInputValue(newValue);
-    // }
   };
 
   return (
@@ -55,7 +49,6 @@ const Modal: FC<ModalProps> = ({ title, isOpen, onClose, onSubmit }) => {
             onChange={(e) => setInputContent(e.target.value)}
             placeholder="Enter content"
           />
-          {error && <p style={{ color: "red" }}>{error}</p>}
           <button className="primary" type="submit">
             Create
           </button>

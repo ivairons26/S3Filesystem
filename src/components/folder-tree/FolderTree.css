@@ -1,9 +1,16 @@
 .left-navigation {
-  width: 250px;
+  width: 350px;
   background-color: #f4f4f4;
   border-right: 1px solid #ddd;
 
   button {
+    display: flex;
     background-color: transparent;
+    width: 100%;
+    border-radius: unset;
+  }
+
+  .active {
+    background-color: #bfbebe;
   }
 }

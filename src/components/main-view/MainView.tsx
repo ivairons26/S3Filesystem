@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import addFolder from "../../assets/add-folder.svg";
 import newFile from "../../assets/file-plus.svg";
 import Modal from "../modal/Modal";
@@ -9,8 +9,21 @@ import {
   EntityType,
 } from "../../utils/entitity.util";
 import { useConfigContext } from "../../contexts/config.context";
+import { Tree } from "../../models/filesystem.model";
 
-export default function MainView() {
+interface Props {
+  data: Tree;
+  currentWorkingDirectory: string;
+  setCurrentWorkingDirectory: React.Dispatch<React.SetStateAction<string>>;
+  setFileData: React.Dispatch<React.SetStateAction<Tree | undefined>>;
+}
+
+const MainView: FC<Props> = ({
+  data,
+  currentWorkingDirectory,
+  setCurrentWorkingDirectory,
+  setFileData,
+}) => {
   const configContext = useConfigContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -27,16 +40,46 @@ export default function MainView() {
     setIsModalOpen(false);
   };
 
-  const handleSubmit = (name: string, content: string) => {
-    // TODO add to appropriate directory
-    if (configContext.config) {
-      s3Service.uploadObject(
-        configContext.config.bucketName,
-        name + entitySuffix[entityType],
-        content
-      );
+  const handleSubmit = async (name: string, content: string) => {
+    // update the sructure file
+    const parts = currentWorkingDirectory.split("/").filter((d) => d);
+    const dataCopy = structuredClone(data);
+    let newData = dataCopy.root.children;
+
+    parts.forEach((part) => {
+      newData = newData[part].children;
+    });
+
+    newData[name] = {
+      name: name,
+      path: currentWorkingDirectory + name + entitySuffix[entityType],
+      type: entityType,
+      children: {},
+    };
+
+    setFileData(dataCopy);
+
+    try {
+      if (configContext.config) {
+        const uploadNewFilePromise = s3Service.putObject(
+          configContext.config.bucketName,
+          currentWorkingDirectory + name + entitySuffix[entityType],
+          content
+        );
+
+        const updateFileStructure = s3Service.setStructureObject(
+          configContext.config.bucketName,
+          dataCopy
+        );
+
+        await Promise.all([uploadNewFilePromise, updateFileStructure]);
+      }
+    } catch (error: Error) {
+      console.error("Error uploading objects:", error);
     }
   };
+
+  const isDisabled = currentWorkingDirectory ? false : true;
 
   return (
     <>
@@ -49,6 +92,7 @@ export default function MainView() {
           <img src={addFolder} alt="" />
         </button>
         <button
+          disabled={isDisabled}
           onClick={() => handleOpenModal("file")}
           title="Create new file"
           className="icon-button"
@@ -64,4 +108,6 @@ export default function MainView() {
       />
     </>
   );
-}
+};
+
+export default MainView;

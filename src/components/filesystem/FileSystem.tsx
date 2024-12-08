@@ -10,6 +10,8 @@ import { Tree } from "../../models/filesystem.model";
 export default function FileSystemComponent() {
   const configContext = useConfigContext();
   const [fileData, setFileData] = useState<Tree>();
+  const [currentWorkingDirectory, setCurrentWorkingDirectory] =
+    useState<string>("");
   const s3Service = useS3Service();
 
   useEffect(() => {
@@ -30,7 +32,7 @@ export default function FileSystemComponent() {
           console.log("fileSystemTree", data);
         })
         .catch((error: Error) => {
-          if (error.message === "The specified key does not exist") {
+          if (error.message === "The specified key does not exist.") {
             setFileData(buildEmptyRootFolder());
           }
         });
@@ -39,12 +41,21 @@ export default function FileSystemComponent() {
 
   return (
     <>
-      {fileData?.type && (
+      {fileData?.root.children && (
         <div className="viewport">
           <div className="navigation">
-            <FolderTree data={fileData.children}></FolderTree>
+            <FolderTree
+              setCurrentWorkingDirectory={setCurrentWorkingDirectory}
+              currentWorkingDirectory={currentWorkingDirectory}
+              data={fileData["root"].children}
+            ></FolderTree>
           </div>
-          <MainView></MainView>
+          <MainView
+            setCurrentWorkingDirectory={setCurrentWorkingDirectory}
+            currentWorkingDirectory={currentWorkingDirectory}
+            data={fileData}
+            setFileData={setFileData}
+          ></MainView>
         </div>
       )}
     </>
