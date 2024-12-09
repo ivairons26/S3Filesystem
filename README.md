@@ -17,3 +17,7 @@ The application has many ways in which it could be improved and here are some of
 4. Ideally for production readiness every functionallity should be covered with unit/integration tests.
 
 I
+
+#### Tests
+
+npm run test

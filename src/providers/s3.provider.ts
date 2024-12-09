@@ -1,4 +1,4 @@
-import AWS from "aws-sdk";
+import * as AWS from "aws-sdk";
 import { Config } from "../models/config.model";
 import { CONNECTION_STRING_STORAGE_KEY } from "../contexts/ConfigProvider";
 
