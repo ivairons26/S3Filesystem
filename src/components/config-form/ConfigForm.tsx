@@ -51,7 +51,7 @@ export default function ConfigForm() {
 
   return (
     <div className="config-form">
-      <form onSubmit={handleSubmit}>
+      <form aria-label="form" onSubmit={handleSubmit}>
         <h2>Connect to your S3 bucket</h2>
         <div className="configInput">
           <label htmlFor="bucket">Bucket:</label>
