@@ -1,50 +1,19 @@
-# React + TypeScript + Vite
+# Run Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+npm i
+npm run dev
 
-Currently, two official plugins are available:
+## Explaining the Application
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Upon first itteraction the local storage is checked for bucket credentials, if not found the configuration form is shown, afterwards the creds are saved in local storage in connectionString property. The structure of the file system is saved in a single file ~s3_filesystem_structure~ to avoid recalculation on each load/re-render.
 
-## Expanding the ESLint configuration
+### Room for Improvement
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+The application has many ways in which it could be improved and here are some of them:
 
-- Configure the top-level `parserOptions` property like this:
+1. Although on init of FyleSystem component only one file is requested that is ~s3_filesystem_structure~ in which we hold our system structure, if we have a bigger structure it could become a problem as aa lot of DOM components will be created.
+2. Create modal for folder and file is now one, it is better to be split into two and each should hold only its own business logic.
+3. The top bar in the MainView component could be extracted - first to reduce the size of the main component and second so it could allow easy reuse like the case when we are showing file content.
+4. Ideally for production readiness every functionallity should be covered with unit/integration tests.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+I

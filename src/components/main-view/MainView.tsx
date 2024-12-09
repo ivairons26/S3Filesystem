@@ -19,7 +19,9 @@ import {
 import folder from "../../assets/folder.svg";
 import file from "../../assets/file-pencil.svg";
 import back from "../../assets/flip-backward.svg";
+import dotsVertical from "../../assets/dots-vertical.svg";
 import "./MainView.css";
+import MainViewFileOpen from "./MainViewFileOpen";
 
 interface Props {
   data: Tree;
@@ -36,6 +38,7 @@ const MainView: FC<Props> = ({
 }) => {
   const configContext = useConfigContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [fileOpen, setFileOpen] = useState("");
   const [oneLevelItems, setOneLevelItems] = useState<ObjectList>();
   const [modalTitle, setModalTitle] = useState("");
   const [entityType, setEntityType] = useState<EntityType>("file");
@@ -62,11 +65,11 @@ const MainView: FC<Props> = ({
       // get root directories only
       const objecList: ObjectList = [];
       Object.keys(data.root.children).forEach((key) =>
-        objecList.push({ Key: key })
+        objecList.push({ Key: key + "/" })
       );
       setOneLevelItems(objecList);
     }
-  }, [currentWorkingDirectory]);
+  }, [currentWorkingDirectory, data]);
 
   const handleOpenModal = (entity: EntityType) => {
     setModalTitle(entityModalTitle[entity]);
@@ -117,74 +120,129 @@ const MainView: FC<Props> = ({
     }
   };
 
-  const isDisabled = currentWorkingDirectory ? false : true;
-
-  const handleItemDoubleClick = (item: string) => {
+  const handleItemDoubleClick = (item: string): void => {
     if (item.indexOf(".txt") === -1) {
       // if folder open directory
-      item = item[item.length - 1] === "/" ? item : item + "/";
       setCurrentWorkingDirectory(item);
     } else {
       // if file open file
+      setFileOpen(item);
     }
   };
 
-  const goBack = () => {
+  const goBack = (): void => {
     setCurrentWorkingDirectory(goPreviousDirectory(currentWorkingDirectory));
+    setFileOpen("");
+  };
+
+  const deleteEntity = async (name: string) => {
+    const parts = currentWorkingDirectory.split("/").filter((d) => d);
+    const dataCopy = structuredClone(data);
+
+    let newData = dataCopy.root.children;
+
+    parts.forEach((part) => {
+      newData = newData[part].children;
+    });
+
+    const nameParts = name.split("/").filter((d) => d);
+    const nameLastPart = nameParts[nameParts.length - 1];
+
+    delete newData[nameLastPart];
+    setFileData(dataCopy);
+
+    if (configContext.config) {
+      const deleteEntityPromise = s3Service.deleteObject(
+        configContext.config.bucketName,
+        name
+      );
+
+      const updateFileStructure = s3Service.setStructureObject(
+        configContext.config.bucketName,
+        dataCopy
+      );
+
+      await Promise.all([deleteEntityPromise, updateFileStructure]).catch(
+        (error: Error) => {
+          console.error("Error deleting object:", error);
+        }
+      );
+    }
   };
 
   return (
     <div className="main-view">
-      <nav className="top-navigation">
-        <button onClick={goBack} title="Back" className="icon-button">
-          <img src={back} alt="" />
-        </button>
-        <span className="current-directory">
-          {currentWorkingDirectory
-            ? objectName(currentWorkingDirectory)
-            : "root"}
-        </span>
-        <button
-          onClick={() => handleOpenModal("folder")}
-          title="Add new folder"
-          className="icon-button"
-        >
-          <img src={addFolder} alt="" />
-        </button>
-        <button
-          disabled={isDisabled}
-          onClick={() => handleOpenModal("file")}
-          title="Create new file"
-          className="icon-button"
-        >
-          <img src={newFile} alt="" />
-        </button>
-      </nav>
+      {!fileOpen && (
+        <>
+          <nav className="top-navigation">
+            <button onClick={goBack} title="Back" className="icon-button">
+              <img src={back} alt="" />
+            </button>
+
+            <span className="current-directory">
+              {currentWorkingDirectory
+                ? objectName(currentWorkingDirectory)
+                : "root"}
+            </span>
+            <button
+              onClick={() => handleOpenModal("folder")}
+              title="Add new folder"
+              className="icon-button"
+            >
+              <img src={addFolder} alt="" />
+            </button>
+            <button
+              disabled={!currentWorkingDirectory}
+              onClick={() => handleOpenModal("file")}
+              title="Create new file"
+              className="icon-button"
+            >
+              <img src={newFile} alt="" />
+            </button>
+          </nav>
+          <ul className="file-system">
+            {oneLevelItems &&
+              oneLevelItems.map((item, index) => (
+                <li
+                  onDoubleClick={() => handleItemDoubleClick(item.Key || "")}
+                  key={index}
+                  className="file-item"
+                >
+                  {item.Key?.indexOf(".txt") !== -1 ? (
+                    <img className="icon" src={file} alt="" />
+                  ) : (
+                    <img className="icon" src={folder} alt="" />
+                  )}
+
+                  {objectName(item.Key || "")}
+                  <div className="dropdown">
+                    <button className="icon-button">
+                      {" "}
+                      <img src={dotsVertical} alt="" />
+                    </button>
+                    <div className="dropdown-content">
+                      <button
+                        onClick={() => deleteEntity(item.Key || "")}
+                        className="dropdown-button"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+          </ul>
+        </>
+      )}
+      {fileOpen && <MainViewFileOpen fileOpen={fileOpen} goBack={goBack} />}
+
       <Modal
+        type={entityType}
         title={modalTitle}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleSubmit}
       />
-
-      <ul className="file-system">
-        {oneLevelItems &&
-          oneLevelItems.map((item, index) => (
-            <li
-              onDoubleClick={() => handleItemDoubleClick(item.Key || "")}
-              key={index}
-              className="file-item"
-            >
-              {item.Key?.indexOf(".txt") !== -1 ? (
-                <img className="icon" src={file} alt="" />
-              ) : (
-                <img className="icon" src={folder} alt="" />
-              )}
-
-              {objectName(item.Key || "")}
-            </li>
-          ))}
-      </ul>
     </div>
   );
 };

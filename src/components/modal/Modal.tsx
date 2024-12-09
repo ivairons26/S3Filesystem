@@ -1,15 +1,17 @@
 import { useState, FC, FormEvent, ChangeEvent } from "react";
 import "./Modal.css";
 import xMark from "../../assets/xmark.svg";
+import { EntityType } from "../../utils/entitity.util";
 
 interface ModalProps {
+  type: EntityType;
   title: string;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (value: string, content: string) => void;
 }
 
-const Modal: FC<ModalProps> = ({ title, isOpen, onClose, onSubmit }) => {
+const Modal: FC<ModalProps> = ({ type, title, isOpen, onClose, onSubmit }) => {
   const [inputValue, setInputValue] = useState("");
   const [inputContent, setInputContent] = useState("");
 
@@ -43,12 +45,14 @@ const Modal: FC<ModalProps> = ({ title, isOpen, onClose, onSubmit }) => {
             placeholder="Enter name"
             required
           />
-          <input
-            type="text"
-            value={inputContent}
-            onChange={(e) => setInputContent(e.target.value)}
-            placeholder="Enter content"
-          />
+          {type === "file" && (
+            <input
+              type="text"
+              value={inputContent}
+              onChange={(e) => setInputContent(e.target.value)}
+              placeholder="Enter content"
+            />
+          )}
           <button className="primary" type="submit">
             Create
           </button>

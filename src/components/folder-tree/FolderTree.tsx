@@ -45,7 +45,7 @@ export const FolderTree = ({
         const dirData = data[key];
 
         return (
-          <div key={dirData.path} style={{ paddingLeft: "35px" }}>
+          <div key={dirData.path} style={{ paddingLeft: "10px" }}>
             {/* rendering folders */}
             {dirData.type === "folder" && (
               <button
@@ -67,8 +67,6 @@ export const FolderTree = ({
                 )}
               </button>
             )}
-            {/* TODO delete this since requirement is not to show files rendering files */}
-            {/* {dirData.type === "file" && <span>{dirData.name}</span>} */}
             <div
               style={{ display: showNested[dirData.path] ? "block" : "none" }}
             >

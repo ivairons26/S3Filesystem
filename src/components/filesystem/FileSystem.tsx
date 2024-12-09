@@ -16,20 +16,10 @@ export default function FileSystemComponent() {
 
   useEffect(() => {
     if (configContext.config) {
-      // s3Service.deleteObject(
-      //   configContext.config.bucketName,
-      //   "~s3_filesystem_structure~"
-      // );
-      // s3Service.uploadObject(
-      //   configContext.config.bucketName,
-      //   "~s3_filesystem_structure~",
-      //   JSON.stringify(buildEmptyRootFolder())
-      // );
       s3Service
         .getStructureObject(configContext.config.bucketName)
         .then((data) => {
           setFileData(data);
-          // console.log("fileSystemTree", data);
         })
         .catch((error: Error) => {
           if (error.message === "The specified key does not exist.") {

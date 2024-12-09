@@ -20,7 +20,6 @@ class S3Provider {
   }
 
   public static getInstance(): AWS.S3 {
-    // TODO what if there is no config in LS
     if (!S3Provider.instance) {
       const hasConfig = localStorage.getItem(CONNECTION_STRING_STORAGE_KEY);
       if (hasConfig) {

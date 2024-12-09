@@ -17,11 +17,9 @@ class S3Service {
       Key: objectName,
     };
 
-    return JSON.parse(
-      (
-        await S3Provider.getInstance().getObject(params).promise()
-      ).Body.toString("utf-8")
-    );
+    return (
+      await S3Provider.getInstance().getObject(params).promise()
+    ).Body.toString("utf-8");
   };
 
   public getStructureObject = async (bucketName: string) => {
@@ -60,16 +58,19 @@ class S3Service {
   };
 
   public deleteObject = async (bucketName: string, key: string) => {
-    try {
-      const params = {
-        Bucket: bucketName,
-        Key: key,
-      };
+    const params = {
+      Bucket: bucketName,
+      Key: key,
+    };
 
-      return await S3Provider.getInstance().deleteObject(params).promise();
-    } catch (error) {
-      console.error("Error uploading object:", error);
-    }
+    return await S3Provider.getInstance().deleteObject(params).promise();
+  };
+
+  public headBucket = async (bucketName: string) => {
+    const params = {
+      Bucket: bucketName,
+    };
+    return await S3Provider.getInstance().headBucket(params).promise();
   };
 }
 

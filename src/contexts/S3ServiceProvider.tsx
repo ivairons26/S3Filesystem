@@ -17,7 +17,6 @@ export const S3ServiceProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-// TODO move in a new file
 export const useS3Service = () => {
   const service = useContext(S3ServiceContext);
   if (!service) {
